@@ -1,5 +1,7 @@
+''' Apps '''
 from django.apps import AppConfig
 
 
 class LaweConfig(AppConfig):
-    name = 'lawe'
+	''' LaweConfig '''
+	name = 'lawe'
