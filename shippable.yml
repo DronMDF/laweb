@@ -1,14 +1,11 @@
 language: python
 
-build:
-  pre_ci_boot:
-    image_name: library/ubuntu
-    image_tag: 16.04
-    pull: true
+python:
+  - 3.5
 
+build:
   ci:
-    - apt-get -y install python3-pip
-    - pip3 install coverage Django==1.10.4 pep8 pylint unittest-xml-reporting
+    - pip install coverage Django==1.10.4 pep8 pylint unittest-xml-reporting
     - ./style.sh
     - coverage run ./manage.py test --testrunner=xmlrunner.extra.djangotestrunner.XMLTestRunner
     - ./manage.py migrate
