@@ -1,7 +1,9 @@
+''' Models '''
 from django.db import models
 
 
 class Account(models.Model):
+	''' Счет '''
 	date = models.DateTimeField('Creation date')
 	group = models.CharField(max_length=200)
 	subgroup = models.CharField(max_length=200)
@@ -11,6 +13,7 @@ class Account(models.Model):
 
 
 class Transaction(models.Model):
+	''' Операции '''
 	date = models.DateTimeField('date')
 	debit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
 	credit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
