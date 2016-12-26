@@ -1,6 +1,11 @@
 language: python
 
 build:
+  pre_ci_boot:
+    image_name: library/ubuntu
+    image_tag: 16.04
+    pull: true
+
   ci:
     - apt-get -y install python3-pip
     - pip3 install coverage Django==1.10.4 pep8 pylint unittest-xml-reporting
