@@ -4,7 +4,7 @@ from django.db import models
 
 class Account(models.Model):
 	''' Счет '''
-	date = models.DateTimeField('Дата создания')
+	date = models.DateField('Дата создания', auto_now=True)
 	group = models.CharField('Основная группа', max_length=200)
 	subgroup = models.CharField('Подгруппа', max_length=200)
 	name = models.CharField('Название', max_length=200)
