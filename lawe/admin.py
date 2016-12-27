@@ -12,4 +12,4 @@ from .models import Account
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
 	''' Админка для счетов '''
-	list_display = ('group', 'subgroup', 'name')
+	list_display = ('group', 'subgroup', 'name', 'shortname')
