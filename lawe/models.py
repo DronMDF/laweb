@@ -4,12 +4,12 @@ from django.db import models
 
 class Account(models.Model):
 	''' Счет '''
-	date = models.DateTimeField('Creation date')
-	group = models.CharField(max_length=200)
-	subgroup = models.CharField(max_length=200)
-	name = models.CharField(max_length=200)
-	shortname = models.CharField(max_length=50)
-	unit = models.CharField(max_length=30)
+	date = models.DateTimeField('Дата создания')
+	group = models.CharField('Основная группа', max_length=200)
+	subgroup = models.CharField('Подгруппа', max_length=200)
+	name = models.CharField('Название', max_length=200)
+	shortname = models.CharField('Сокращенное название', max_length=50)
+	unit = models.CharField('Измерение', max_length=30)
 
 
 class Transaction(models.Model):
