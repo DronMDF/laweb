@@ -2,6 +2,18 @@
 {% load static %}
 <?xml-stylesheet type="text/xsl" href="{% static 'operations.xsl' %}"?>
 <operations>
-	TODO: Сделать нормальный контент
-	432
+{% for op in operations %}
+	<operation>
+		<debit>
+			<id>{{op.debit.id}}</id>
+			<name>{{op.debit.name}}</name>
+		</debit>
+		<credit>
+			<id>{{op.credit.id}}</id>
+			<name>{{op.credit.name}}</name>
+		</credit>
+		<amount>{{op.amount}}</amount>
+		<description>{{op.description}}</description>
+	</operation>
+{% endfor %}
 </operations>
