@@ -6,7 +6,7 @@ from lawe.models import Transaction
 class OperationView(TemplateView):
 	''' Вьюв для операций '''
 	template_name = 'operations.xml'
-	context_type = 'application/xml'
+	content_type = 'application/xml'
 
 	def get_operation_data(self, op):
 		''' Формирование контекста для отдельной операции'''
