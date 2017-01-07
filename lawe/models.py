@@ -14,7 +14,7 @@ class Account(models.Model):
 
 class Transaction(models.Model):
 	''' Операции '''
-	date = models.DateTimeField('date')
+	date = models.DateTimeField('date', auto_now=True)
 	debit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
 	credit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
 	amount = models.IntegerField()
