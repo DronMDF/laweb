@@ -40,3 +40,11 @@ class OperationView(TemplateView):
 			self.get_operation_data(op) for op in Transaction.objects.all()
 		]
 		return context
+
+	def post(self, request, *args, **kwargs):
+		''' Обработчик вводимых операций '''
+		debit = Account.objects.get(pk=request.POST['debit_id'])
+		credit = Account.objects.get(pk=request.POST['credit_id'])
+		Transaction.objects.create(debit=debit, credit=credit,
+			amount=request.POST['amount'], description=request.POST['description'])
+		return self.get(request, *args, **kwargs)
