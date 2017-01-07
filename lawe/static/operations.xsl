@@ -6,15 +6,16 @@
 </head>
 <body>
 	<form method='POST'>
+		<input type='hidden' name='csrfmiddlewaretoken' value='{cqrf/input/@value}'/>
 		<select name="debit_id">
-			<option value='a1'>Account1</option>
-			<option value='a2'>Account2</option>
-			<option value='a3'>Account3</option>
+			<xsl:for-each select="account">
+				<option value='{id}'><xsl:value-of select='name'/></option>
+			</xsl:for-each>
 		</select>
 		<select name="credit_id">
-			<option value='a1'>Account1</option>
-			<option value='a2'>Account2</option>
-			<option value='a3'>Account3</option>
+			<xsl:for-each select="account">
+				<option value='{id}'><xsl:value-of select='name'/></option>
+			</xsl:for-each>
 		</select>
 		<input type='number' name='amount'/>
 		<input type='text' name='description'/>

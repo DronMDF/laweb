@@ -1,12 +1,19 @@
 ''' laweb views '''
 from django.views.generic import TemplateView
-from lawe.models import Transaction
+from lawe.models import Account, Transaction
 
 
 class OperationView(TemplateView):
 	''' Вьюв для операций '''
 	template_name = 'operations.xml'
 	content_type = 'application/xml'
+
+	def get_account_data(self, acc):
+		''' Формирование контекста для аккаунта '''
+		return {
+			'id': acc.id,
+			'name': acc.shortname
+		}
 
 	def get_operation_data(self, op):
 		''' Формирование контекста для отдельной операции'''
@@ -26,6 +33,9 @@ class OperationView(TemplateView):
 	def get_context_data(self, **kwargs):
 		''' Стандартный метод для формирования контекста '''
 		context = super().get_context_data(**kwargs)
+		context['accounts'] = [
+			self.get_account_data(acc) for acc in Account.objects.all()
+		]
 		context['operations'] = [
 			self.get_operation_data(op) for op in Transaction.objects.all()
 		]

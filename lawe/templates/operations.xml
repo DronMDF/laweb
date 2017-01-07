@@ -2,6 +2,15 @@
 {% load static %}
 <?xml-stylesheet type="text/xsl" href="{% static 'operations.xsl' %}"?>
 <operations>
+	<cqrf>
+		{% csrf_token %}
+	</cqrf>
+{% for acc in accounts %}
+	<account>
+		<id>{{acc.id}}</id>
+		<name>{{acc.name}}</name>
+	</account>
+{% endfor %}
 {% for op in operations %}
 	<operation>
 		<debit>
