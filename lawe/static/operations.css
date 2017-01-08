@@ -1,0 +1,19 @@
+table {
+	width: 100%;
+}
+
+td {
+	padding: 8px;
+}
+
+thead {
+	background: #f6f6f6;
+}
+
+tbody > tr:nth-child(odd) {
+	background: #fff;
+}
+
+tbody > tr:nth-child(even) {
+	background: #f9f9f9;
+}
