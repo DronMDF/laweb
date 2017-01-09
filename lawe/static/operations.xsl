@@ -10,22 +10,22 @@
 		<input type='hidden' name='csrfmiddlewaretoken' value='{cqrf/input/@value}'/>
 		<table>
 		<tr>
-		<td></td>
-		<td>
+		<td class='date_field'></td>
+		<td class='debit_field'>
 		<select name="debit_id">
 			<xsl:for-each select="account">
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
 		</select>
 		</td>
-		<td>
+		<td class='credit_field'>
 		<select name="credit_id">
 			<xsl:for-each select="account">
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
 		</select>
 		</td>
-		<td>
+		<td class='amount_field'>
 		<input type='number' name='amount'/>
 		</td>
 		<td>
