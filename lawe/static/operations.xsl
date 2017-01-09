@@ -38,20 +38,20 @@
 	<table>
 		<thead>
 			<tr>
-				<td>Дата</td>
-				<td>Дебет</td>
-				<td>Кредит</td>
-				<td>Сумма</td>
+				<td class='date_field'>Дата</td>
+				<td class='debit_field'>Дебет</td>
+				<td class='credit_field'>Кредит</td>
+				<td class='amount_field'>Сумма</td>
 				<td>Назначение</td>
 			</tr>
 		</thead>
 		<tbody>
 			<xsl:for-each select="operation">
 			<tr>
-				<td><xsl:value-of select="date"/></td>
-				<td><xsl:value-of select="debit/name"/></td>
-				<td><xsl:value-of select="credit/name"/></td>
-				<td><xsl:value-of select="amount"/></td>
+				<td class='date_field'><xsl:value-of select="date"/></td>
+				<td class='debit_field'><xsl:value-of select="debit/name"/></td>
+				<td class='credit_field'><xsl:value-of select="credit/name"/></td>
+				<td class='amount_field'><xsl:value-of select="amount"/></td>
 				<td><xsl:value-of select="description"/></td>
 			</tr>
 			</xsl:for-each>
