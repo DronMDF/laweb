@@ -18,6 +18,7 @@ class OperationView(TemplateView):
 	def get_operation_data(self, op):
 		''' Формирование контекста для отдельной операции'''
 		return {
+			'date': op.date.strftime('%d.%m.%Y'),
 			'debit': {
 				'id': op.debit.id,
 				'name': op.debit.shortname

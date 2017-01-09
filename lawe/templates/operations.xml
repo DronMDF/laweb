@@ -13,6 +13,7 @@
 {% endfor %}
 {% for op in operations %}
 	<operation>
+		<date>{{op.date}}</date>
 		<debit>
 			<id>{{op.debit.id}}</id>
 			<name>{{op.debit.name}}</name>
