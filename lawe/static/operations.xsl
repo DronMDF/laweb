@@ -3,34 +3,59 @@
 <xsl:template match="/operations">
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="/static/operations.css"/>
 </head>
 <body>
 	<form method='POST'>
 		<input type='hidden' name='csrfmiddlewaretoken' value='{cqrf/input/@value}'/>
+		<table>
+		<tr>
+		<td class='date_field'></td>
+		<td class='debit_field'>
 		<select name="debit_id">
 			<xsl:for-each select="account">
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
 		</select>
+		</td>
+		<td class='credit_field'>
 		<select name="credit_id">
 			<xsl:for-each select="account">
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
 		</select>
+		</td>
+		<td class='amount_field'>
 		<input type='number' name='amount'/>
+		</td>
+		<td>
 		<input type='text' name='description'/>
 		<input type='submit'/>
+		</td>
+		</tr>
+		</table>
 	</form>
 	<table>
-	<xsl:for-each select="operation">
-		<tr>
-			<td><xsl:value-of select="date"/></td>
-			<td><xsl:value-of select="debit/name"/></td>
-			<td><xsl:value-of select="credit/name"/></td>
-			<td><xsl:value-of select="amount"/></td>
-			<td><xsl:value-of select="description"/></td>
-		</tr>
-	</xsl:for-each>
+		<thead>
+			<tr>
+				<td class='date_field'>Дата</td>
+				<td class='debit_field'>Дебет</td>
+				<td class='credit_field'>Кредит</td>
+				<td class='amount_field'>Сумма</td>
+				<td>Назначение</td>
+			</tr>
+		</thead>
+		<tbody>
+			<xsl:for-each select="operation">
+			<tr>
+				<td class='date_field'><xsl:value-of select="date"/></td>
+				<td class='debit_field'><xsl:value-of select="debit/name"/></td>
+				<td class='credit_field'><xsl:value-of select="credit/name"/></td>
+				<td class='amount_field'><xsl:value-of select="amount"/></td>
+				<td><xsl:value-of select="description"/></td>
+			</tr>
+			</xsl:for-each>
+		</tbody>
 	</table>
 </body>
 </html>

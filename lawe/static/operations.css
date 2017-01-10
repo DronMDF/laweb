@@ -1,0 +1,28 @@
+table {
+	width: 100%;
+	table-layout: fixed;
+}
+
+thead {
+	background: #f6f6f6;
+}
+
+tbody > tr:nth-child(odd) {
+	background: #fff;
+}
+
+tbody > tr:nth-child(even) {
+	background: #f9f9f9;
+}
+
+td {
+	padding: 8px;
+}
+
+td.date_field, td.amount_field {
+	width: 10%;
+}
+
+td.debit_field, td.credit_field {
+	width: 20%;
+}
