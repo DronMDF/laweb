@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% load static %}
+<?xml-stylesheet type="text/xsl" href="{% static 'operations.xsl' %}"?>
+<account>
+	<total>{{total}}</total>
+</account>
