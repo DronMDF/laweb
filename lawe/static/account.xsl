@@ -23,7 +23,7 @@
 			<tr>
 				<td class='date_field'><xsl:value-of select="date"/></td>
 				<td class='amount_field'><xsl:value-of select="income"/></td>
-				<td class='amount_field'><xsl:value-of select="ioutcome"/></td>
+				<td class='amount_field'><xsl:value-of select="outcome"/></td>
 				<td><xsl:value-of select="description"/></td>
 				<td class='credit_field'><xsl:value-of select="other"/></td>
 			</tr>
