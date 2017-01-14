@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 {% load static %}
-<?xml-stylesheet type="text/xsl" href="{% static 'operations.xsl' %}"?>
+<?xml-stylesheet type="text/xsl" href="{% static 'account.xsl' %}"?>
 <account>
 	<total>{{total}}</total>
 {% for op in operations %}
