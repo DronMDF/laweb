@@ -3,4 +3,13 @@
 <?xml-stylesheet type="text/xsl" href="{% static 'operations.xsl' %}"?>
 <account>
 	<total>{{total}}</total>
+{% for op in operations %}
+	<operation>
+		<date>{{op.date}}</date>
+		<income>{{op.income}}</income>
+		<outcome>{{op.outcome}}</outcome>
+		<description>{{op.description}}</description>
+		<other>{{op.other}}</other>
+	</operation>
+{% endfor %}
 </account>
