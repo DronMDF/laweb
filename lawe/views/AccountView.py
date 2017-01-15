@@ -31,6 +31,6 @@ class AccountView(TemplateView):
 		context['operations'] = [
 			self.get_operation_context(t, account) for t in Transaction.objects.filter(
 				Q(credit=account) | Q(debit=account)
-			)
+			).order_by('-date')
 		]
 		return context

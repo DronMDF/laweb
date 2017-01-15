@@ -38,7 +38,9 @@ class OperationView(TemplateView):
 			self.get_account_data(acc) for acc in Account.objects.all()
 		]
 		context['operations'] = [
-			self.get_operation_data(op) for op in Transaction.objects.all()
+			self.get_operation_data(op) for op in Transaction.objects.all().order_by(
+				'-date'
+			)
 		]
 		return context
 
