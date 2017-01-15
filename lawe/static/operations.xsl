@@ -49,8 +49,8 @@
 			<xsl:for-each select="operation">
 			<tr>
 				<td class='date_field'><xsl:value-of select="date"/></td>
-				<td class='debit_field'><xsl:value-of select="debit/name"/></td>
-				<td class='credit_field'><xsl:value-of select="credit/name"/></td>
+				<td class='debit_field'><a href='account/{debit/id}'><xsl:value-of select="debit/name"/></a></td>
+				<td class='credit_field'><a href='account/{credit/id}'><xsl:value-of select="credit/name"/></a></td>
 				<td class='amount_field'><xsl:value-of select="amount"/></td>
 				<td><xsl:value-of select="description"/></td>
 			</tr>
