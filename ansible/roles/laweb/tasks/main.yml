@@ -4,6 +4,7 @@
     repo: https://github.com/DronMDF/laweb.git
     dest: "{{project_dir}}/{{project_name}}"
     version: master
+    force: true
 - name: Copy laweb settings
   template: "src=roles/laweb/templates/settings.j2 dest={{project_dir}}/{{project_name}}/laweb/settings.py"
 - name: Migrate
