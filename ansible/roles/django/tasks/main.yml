@@ -1,0 +1,5 @@
+---
+- name: Install pip package
+  apt: "name=python3-pip state=present force=yes"
+- name: Install Django
+  pip: "executable=pip3 name='Django==1.10.5'"
