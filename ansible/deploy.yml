@@ -1,0 +1,10 @@
+---
+- hosts: laweb
+  vars:
+    project_name: laweb
+  roles:
+    - nginx
+    - uwsgi
+    - postgres
+    - django
+    - laweb
