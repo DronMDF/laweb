@@ -10,5 +10,5 @@
 - name: create project log directory
   file: "path={{project_dir}}/logs state=directory"
 - name: start nginx
-  service: "name=nginx state=started"
+  service: "name=nginx state=restarted"
 
