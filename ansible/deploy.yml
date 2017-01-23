@@ -4,7 +4,7 @@
     project_name: laweb
     project_dir: /usr/share/{{project_name}}
   roles:
-    - nginx
-    - uwsgi
     - django
     - laweb
+    - uwsgi
+    - nginx
