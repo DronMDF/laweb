@@ -6,6 +6,5 @@
   roles:
     - nginx
     - uwsgi
-    - postgres
     - django
     - laweb
