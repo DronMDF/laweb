@@ -1,0 +1,13 @@
+---
+- name: Fetch laweb sources
+  git:
+    repo: https://github.com/DronMDF/laweb.git
+    dest: "{{project_dir}}/{{project_name}}"
+    version: master
+    force: true
+- name: Copy laweb settings
+  template: "src=roles/laweb/templates/settings.j2 dest={{project_dir}}/{{project_name}}/laweb/settings.py"
+- name: Migrate
+  shell: "{{project_dir}}/{{project_name}}/manage.py migrate"
+- name: Collectstatic
+  shell: "yes yes | {{project_dir}}/{{project_name}}/manage.py collectstatic"

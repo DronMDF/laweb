@@ -1,0 +1,10 @@
+---
+- hosts: laweb
+  vars:
+    project_name: laweb
+    project_dir: /usr/share/{{project_name}}
+  roles:
+    - django
+    - laweb
+    - uwsgi
+    - nginx

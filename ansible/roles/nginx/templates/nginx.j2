@@ -1,0 +1,28 @@
+server {
+	listen {{ server_port }};
+	server_name {{ server_name }};
+	charset utf-8;
+	client_max_body_size 75M;
+	error_log {{nginx_error_log}};
+	location / {
+		uwsgi_pass unix:///run/uwsgi/app/{{project_name}}/socket;
+		include uwsgi_params;
+	}
+	location /static {
+		alias {{project_dir}}/static;
+		expires 365d;
+	}
+	location /media {
+		alias {{project_dir}}/media;
+		expires 365d;
+	}
+	location /player/private/media/ {
+		alias {{project_dir}}/media/;
+	}
+	location /robots.txt {
+		root {{project_dir}}/static/;
+	}
+	location /favicon.ico {
+		root {{project_dir}}/static/;
+	}
+}
