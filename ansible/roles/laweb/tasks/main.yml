@@ -7,7 +7,20 @@
     force: true
 - name: Copy laweb settings
   template: "src=roles/laweb/templates/settings.j2 dest={{project_dir}}/{{project_name}}/laweb/settings.py"
-- name: Migrate
-  shell: "{{project_dir}}/{{project_name}}/manage.py migrate"
-- name: Collectstatic
-  shell: "yes yes | {{project_dir}}/{{project_name}}/manage.py collectstatic"
+- name: Initialize project
+  django_manage:
+    command: "{{item}}"
+    app_path: "{{project_dir}}/{{project_name}}"
+  with_items:
+    - migrate
+    - collectstatic
+- name: Change directory permission
+  file:
+    path: "{{project_dir}}/{{project_name}}"
+    mode: 0775
+    group: www-data
+- name: Change database permission
+  file:
+    path: "{{project_dir}}/{{project_name}}/db.sqlite3"
+    mode: 0664
+    group: www-data
