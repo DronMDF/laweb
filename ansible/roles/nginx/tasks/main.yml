@@ -9,6 +9,16 @@
   file: "src={{nginx_conf_dir}}/{{project_name}}.conf dest={{nginx_sites_dir}}/{{project_name}}.conf state=link"
 - name: create project log directory
   file: "path={{project_dir}}/logs state=directory"
-- name: start nginx
+- name: Create self-signed SSL cert
+  command: openssl req -new -nodes -x509 -subj "/C=RU/ST=Moscow/L=Moscow/CN={{server_name}}" -days 3650 -keyout /etc/nginx/{{server_name}}.key -out /etc/nginx/{{server_name}}.crt -extensions v3_ca creates=/etc/nginx/{{server_name}}.crt
+- name: Set permission for ssl key
+  file:
+    path: "/etc/nginx/{{server_name}}.key"
+    mode: 0400
+- name: Set permission for ssl key
+  file:
+    path: "/etc/nginx/{{server_name}}.crt"
+    mode: 0400
+- name: Restart nginx
   service: "name=nginx state=restarted"
 

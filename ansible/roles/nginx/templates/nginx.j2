@@ -1,9 +1,13 @@
 server {
-	listen {{ server_port }};
-	server_name {{ server_name }};
+	listen 443 ssl;
+	server_name {{server_name}};
+
+	ssl_certificate     {{server_name}}.crt;
+	ssl_certificate_key {{server_name}}.key;
+
 	charset utf-8;
 	client_max_body_size 75M;
-	error_log {{nginx_error_log}};
+	error_log error.log;
 	location / {
 		uwsgi_pass unix:///run/uwsgi/app/{{project_name}}/socket;
 		include uwsgi_params;
