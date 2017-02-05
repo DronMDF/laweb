@@ -1,11 +1,12 @@
 ''' View для отчета по счету '''
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
 from lawe.models import Account, Transaction
 
 
-class AccountView(TemplateView):
+class AccountView(LoginRequiredMixin, TemplateView):
 	''' Отчет по счету '''
 	template_name = 'account.xml'
 	content_type = 'application/xml'

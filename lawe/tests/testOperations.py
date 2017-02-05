@@ -1,15 +1,21 @@
 ''' Operation tests '''
+from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from lawe.models import Account, Transaction
 
 
 class TestOperations(TestCase):
 	''' Тестирование операций с применением API '''
+	def setUp(self):
+		self.user = User.objects.create_user('john', 'password')
+		self.client = Client()
+		self.client.force_login(self.user)
+
 	def testPageOk(self):
 		''' Тестируем наличие url '''
 		# Given
 		# When
-		response = Client().get('/')
+		response = self.client.get('/')
 		# Then
 		self.assertEqual(response.status_code, 200)
 
@@ -22,7 +28,7 @@ class TestOperations(TestCase):
 				unit='тр')
 		Transaction.objects.create(debit=a1, credit=a2, amount=432, description='')
 		# When
-		response = Client().get('/')
+		response = self.client.get('/')
 		# Then
 		self.assertEqual(response.status_code, 200)
 		self.assertIn('432', response.content.decode('utf8'))

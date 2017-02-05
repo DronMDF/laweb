@@ -1,12 +1,14 @@
 ''' laweb views '''
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from lawe.models import Account, Transaction
 
 
-class OperationView(TemplateView):
+class OperationView(LoginRequiredMixin, TemplateView):
 	''' Вьюв для операций '''
 	template_name = 'operations.xml'
 	content_type = 'application/xml'
+	login_url = '/login/'
 
 	def get_account_data(self, acc):
 		''' Формирование контекста для аккаунта '''
