@@ -6,7 +6,16 @@
 <link rel="stylesheet" type="text/css" href="/static/operations.css"/>
 </head>
 <body>
+	<p align='right'>
+	<a href='/admin'>Управление</a><xsl:text>&#xa0;</xsl:text>
+	<xsl:text>&#xa0;|&#xa0;</xsl:text>
+	<xsl:value-of select='user/name'/><xsl:text>&#xa0;</xsl:text>
+	<a href='/password_change/'>Сменить пароль</a><xsl:text>&#xa0;</xsl:text>
+	<a href='/logout/'>Выйти</a>
+	</p>
+
 	Остаток: <xsl:value-of select="total"/>
+
 	<p/>
 	<table>
 		<thead>
