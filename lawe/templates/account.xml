@@ -2,6 +2,9 @@
 {% load static %}
 <?xml-stylesheet type="text/xsl" href="{% static 'account.xsl' %}"?>
 <account>
+	<user>
+		<name>{{request.user.username}}</name>
+	</user>
 	<total>{{total}}</total>
 {% for op in operations %}
 	<operation>
