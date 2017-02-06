@@ -8,8 +8,9 @@ from lawe.models import Account, Transaction
 
 class AccountView(LoginRequiredMixin, TemplateView):
 	''' Отчет по счету '''
-	template_name = 'account.xml'
 	content_type = 'application/xml'
+	login_url = '/login/'
+	template_name = 'account.xml'
 
 	def get_operation_context(self, op, acc):
 		''' Контекст для одной операции '''

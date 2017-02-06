@@ -6,9 +6,9 @@ from lawe.models import Account, Transaction
 
 class OperationView(LoginRequiredMixin, TemplateView):
 	''' Вьюв для операций '''
-	template_name = 'operations.xml'
 	content_type = 'application/xml'
 	login_url = '/login/'
+	template_name = 'operations.xml'
 
 	def get_account_data(self, acc):
 		''' Формирование контекста для аккаунта '''
