@@ -1,4 +1,6 @@
 ---
+- name: Install git
+  apt: "name='git' state=present force=yes"
 - name: Fetch laweb sources
   git:
     repo: https://github.com/DronMDF/laweb.git
