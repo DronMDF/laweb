@@ -1,0 +1,21 @@
+---
+- name: Enable ssh connection
+  iptables:
+    chain: INPUT
+    ctstate: NEW
+    protocol: tcp
+    destination_port: ssh
+    jump: ACCEPT
+- name: Enable all established connection
+  iptables:
+    chain: INPUT
+    ctstate: ESTABLISHED,RELATED
+    jump: ACCEPT
+- name: Disable all other incoming packets
+  command: iptables -P INPUT REJECT
+  # Эта штука работает в ansible 2.2
+  #iptables:
+  #  chain: INPUT
+  #  policy: DROP
+- name: Save ruleset
+  shell: iptables-save > /etc/iptables.rules
