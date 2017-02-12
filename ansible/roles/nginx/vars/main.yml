@@ -1,4 +1,0 @@
----
-nginx_conf_dir: /etc/nginx/sites-available
-nginx_sites_dir: /etc/nginx/sites-enabled
-server_name: "{{ansible_host}}"
