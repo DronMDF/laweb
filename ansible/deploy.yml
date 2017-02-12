@@ -6,6 +6,7 @@
   vars_files:
     - /etc/ansible/{{project_name}}.yml
   roles:
+    - base
     - django
     - laweb
     - uwsgi
