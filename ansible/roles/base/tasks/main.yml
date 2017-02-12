@@ -1,18 +1,29 @@
 ---
-- name: Enable ssh connection
-  iptables:
-    chain: INPUT
-    ctstate: NEW
-    protocol: tcp
-    destination_port: ssh
-    jump: ACCEPT
 - name: Enable all established connection
   iptables:
     chain: INPUT
     ctstate: ESTABLISHED,RELATED
     jump: ACCEPT
+- name: Enable incoming connection
+  iptables:
+    chain: INPUT
+    ctstate: NEW
+    protocol: tcp
+    destination_port: "{{item}}"
+    jump: ACCEPT
+  with_items:
+    - ssh
+    - http
+    - https
+- name: Enable incoming icmp echo
+  iptables:
+    chain: INPUT
+    protocol: icmp
+    # Эта штука работает только в ansible 2.2
+    #icmp_type: echo
+    jump: ACCEPT
 - name: Disable all other incoming packets
-  command: iptables -P INPUT REJECT
+  command: iptables -P INPUT DROP
   # Эта штука работает в ansible 2.2
   #iptables:
   #  chain: INPUT
