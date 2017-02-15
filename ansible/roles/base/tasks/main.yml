@@ -1,13 +1,7 @@
 ---
-- name: Enable all established connection
-  iptables:
-    chain: INPUT
-    ctstate: ESTABLISHED,RELATED
-    jump: ACCEPT
 - name: Enable incoming connection
   iptables:
     chain: INPUT
-    ctstate: NEW
     protocol: tcp
     destination_port: "{{item}}"
     jump: ACCEPT
@@ -15,6 +9,23 @@
     - ssh
     - http
     - https
+- name: Enable traffic for outgoing connection
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    source_port: "{{item}}"
+    destination_port: 1024:65535
+    jump: ACCEPT
+  with_items:
+    - http
+    - https
+    - git
+- name: Enable dns traffic
+  iptables:
+    chain: INPUT
+    protocol: udp
+    source_port: domain
+    jump: ACCEPT
 - name: Enable incoming icmp echo
   iptables:
     chain: INPUT
