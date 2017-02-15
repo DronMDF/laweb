@@ -14,6 +14,7 @@
     chain: INPUT
     protocol: tcp
     source_port: "{{item}}"
+    destination_port: 1024:65535
     jump: ACCEPT
   with_items:
     - http
