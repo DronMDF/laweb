@@ -7,10 +7,11 @@ from lawe.models import Account, Transaction
 class TestAccountView(TestCase):
 	''' Тестирование AccountView '''
 	def setUp(self):
-		''' Другой аккаунт мы создадим заранее, чтобы он не замусоривал тесты '''
+		self.user = User.objects.create_user('john', 'password')
+		# Другой аккаунт мы создадим заранее, чтобы он не замусоривал тесты
 		self.oacc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
 				unit='тр')
-		self.user = User.objects.create_user('john', 'password')
+		self.oacc.allow_users.add(self.user)
 		self.client = Client()
 		self.client.force_login(self.user)
 
@@ -19,6 +20,7 @@ class TestAccountView(TestCase):
 		# Given
 		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
 				unit='тр')
+		acc.allow_users.add(self.user)
 		# When
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
@@ -30,6 +32,7 @@ class TestAccountView(TestCase):
 		# Given
 		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
 				unit='тр')
+		acc.allow_users.add(self.user)
 		Transaction.objects.create(debit=self.oacc, credit=acc, amount=100, description='')
 		# When
 		response = self.client.get('/account/%u' % acc.id)
@@ -43,6 +46,7 @@ class TestAccountView(TestCase):
 		# Given
 		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
 				unit='тр')
+		acc.allow_users.add(self.user)
 		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, description='')
 		# When
 		response = self.client.get('/account/%u' % acc.id)
@@ -50,3 +54,12 @@ class TestAccountView(TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertIn('<total>-100</total>', response.content.decode('utf8'))
 		self.assertIn('<outcome>100</outcome>', response.content.decode('utf8'))
+
+	def testUserWithoutAccess(self):
+		''' Пользователь без доступа к счету не может просматривать состояние счета '''
+		# Given
+		acc = Account.objects.create()
+		# When
+		response = self.client.get('/account/%u' % acc.id)
+		# Then
+		self.assertEqual(response.status_code, 403)

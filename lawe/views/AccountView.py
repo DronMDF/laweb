@@ -1,5 +1,6 @@
 ''' View для отчета по счету '''
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
@@ -27,6 +28,8 @@ class AccountView(LoginRequiredMixin, TemplateView):
 		context = super().get_context_data(**kwargs)
 		account_id = kwargs['id']
 		account = get_object_or_404(Account, pk=account_id)
+		if not account.allow_users.filter(pk=self.request.user.id).exists():
+			raise PermissionDenied
 		income = sum((t.amount for t in Transaction.objects.filter(credit=account)))
 		outcome = sum((t.amount for t in Transaction.objects.filter(debit=account)))
 		context['total'] = income - outcome
