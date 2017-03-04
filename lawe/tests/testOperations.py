@@ -32,3 +32,52 @@ class TestOperations(TestCase):
 		# Then
 		self.assertEqual(response.status_code, 200)
 		self.assertIn('432', response.content.decode('utf8'))
+
+	def testForbiddenCreditPost(self):
+		''' Запрет создания операций, если нет доступа к счету дебета '''
+		# Given
+		a1 = Account.objects.create()
+		a1.allow_users.add(self.user)
+		a2 = Account.objects.create()
+		# When
+		response = self.client.post('/', {
+			'debit_id': a1.id,
+			'credit_id': a2.id,
+			'amount': 1,
+			'description': 'Проверка запрета'
+		})
+		# Then
+		self.assertEqual(response.status_code, 403)
+
+	def testForbiddenDebitPost(self):
+		''' Запрет создания операций, если нет доступа к счету кредита '''
+		# Given
+		a1 = Account.objects.create()
+		a2 = Account.objects.create()
+		a2.allow_users.add(self.user)
+		# When
+		response = self.client.post('/', {
+			'debit_id': a1.id,
+			'credit_id': a2.id,
+			'amount': 1,
+			'description': 'Проверка запрета'
+		})
+		# Then
+		self.assertEqual(response.status_code, 403)
+
+	def testGrantedPost(self):
+		''' Разрешение операций если есть доступ к обоим счетам '''
+		# Given
+		a1 = Account.objects.create()
+		a1.allow_users.add(self.user)
+		a2 = Account.objects.create()
+		a2.allow_users.add(self.user)
+		# When
+		response = self.client.post('/', {
+			'debit_id': a1.id,
+			'credit_id': a2.id,
+			'amount': 1,
+			'description': 'Проверка разрешения'
+		})
+		# Then
+		self.assertEqual(response.status_code, 200)

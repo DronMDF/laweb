@@ -1,5 +1,6 @@
 ''' laweb views '''
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.views.generic import TemplateView
 from lawe.models import Account, Transaction
 
@@ -50,6 +51,12 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		''' Обработчик вводимых операций '''
 		debit = Account.objects.get(pk=request.POST['debit_id'])
 		credit = Account.objects.get(pk=request.POST['credit_id'])
+		permit = all((
+			debit.allow_users.filter(pk=self.request.user.id).exists(),
+			credit.allow_users.filter(pk=self.request.user.id).exists()
+		))
+		if not permit:
+			raise PermissionDenied
 		Transaction.objects.create(debit=debit, credit=credit,
 			amount=request.POST['amount'], description=request.POST['description'])
 		return self.get(request, *args, **kwargs)
