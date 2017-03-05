@@ -38,7 +38,9 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		''' Стандартный метод для формирования контекста '''
 		context = super().get_context_data(**kwargs)
 		context['accounts'] = [
-			self.get_account_data(acc) for acc in Account.objects.all()
+			self.get_account_data(acc)
+			for acc in Account.objects.all()
+			if acc.allow_users.filter(pk=self.request.user.id).exists()
 		]
 		context['operations'] = [
 			self.get_operation_data(op) for op in Transaction.objects.all().order_by(

@@ -81,3 +81,16 @@ class TestOperations(TestCase):
 		})
 		# Then
 		self.assertEqual(response.status_code, 200)
+
+	def testHideUnaccessibleAccounts(self):
+		''' В списке аккаунтов отображаются только разрешенные аккаунты '''
+		# Given
+		a1 = Account.objects.create(shortname='Enabled')
+		a1.allow_users.add(self.user)
+		Account.objects.create(shortname='Disabled')
+		# When
+		response = self.client.get('/')
+		# Then
+		text = response.content.decode('utf8')
+		self.assertIn('Enabled', text)
+		self.assertNotIn('Disabled', text)
