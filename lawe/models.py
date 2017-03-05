@@ -1,4 +1,5 @@
 ''' Models '''
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -10,6 +11,7 @@ class Account(models.Model):
 	name = models.CharField('Название', max_length=200)
 	shortname = models.CharField('Сокращенное название', max_length=50)
 	unit = models.CharField('Измерение', max_length=30)
+	allow_users = models.ManyToManyField(User)
 
 
 class Transaction(models.Model):
