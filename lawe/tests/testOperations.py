@@ -22,10 +22,10 @@ class TestOperations(TestCase):
 	def testPageContainLastOperation(self):
 		''' Последняя введенная операция отображается в окне операций '''
 		# Given
-		a1 = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
-		a2 = Account.objects.create(group='G', subgroup='E', name='NN', shortname='SN',
-				unit='тр')
+		a1 = Account.objects.create()
+		a1.allow_users.add(self.user)
+		a2 = Account.objects.create()
+		a2.allow_users.add(self.user)
 		Transaction.objects.create(debit=a1, credit=a2, amount=432, description='')
 		# When
 		response = self.client.get('/')
@@ -91,6 +91,25 @@ class TestOperations(TestCase):
 		# When
 		response = self.client.get('/')
 		# Then
+		self.assertEqual(response.status_code, 200)
 		text = response.content.decode('utf8')
 		self.assertIn('Enabled', text)
 		self.assertNotIn('Disabled', text)
+
+	def testHideOperationWithDisabledAccounts(self):
+		''' В списке операций отображаются только операции,
+			где хотя бы один счет доступен '''
+		# Given
+		a1 = Account.objects.create()
+		a1.allow_users.add(self.user)
+		a2 = Account.objects.create()
+		a3 = Account.objects.create()
+		Transaction.objects.create(debit=a1, credit=a2, amount=1, description='Show')
+		Transaction.objects.create(debit=a2, credit=a3, amount=1, description='Hide')
+		# When
+		response = self.client.get('/')
+		# Then
+		self.assertEqual(response.status_code, 200)
+		text = response.content.decode('utf8')
+		self.assertIn('Show', text)
+		self.assertNotIn('Hide', text)

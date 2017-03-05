@@ -43,9 +43,12 @@ class OperationView(LoginRequiredMixin, TemplateView):
 			if acc.allow_users.filter(pk=self.request.user.id).exists()
 		]
 		context['operations'] = [
-			self.get_operation_data(op) for op in Transaction.objects.all().order_by(
-				'-date'
-			)
+			self.get_operation_data(op)
+			for op in Transaction.objects.all().order_by('-date')
+			if any((
+				op.debit.allow_users.filter(pk=self.request.user.id).exists(),
+				op.credit.allow_users.filter(pk=self.request.user.id).exists()
+			))
 		]
 		return context
 
