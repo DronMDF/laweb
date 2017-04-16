@@ -13,11 +13,34 @@ class Account(models.Model):
 	unit = models.CharField('Измерение', max_length=30)
 	allow_users = models.ManyToManyField(User)
 
+	class Meta:
+		''' Метаданные счетов '''
+		verbose_name = 'Счет'
+		verbose_name_plural = 'Счета'
+
+	def __str__(self):
+		return self.shortname
+
 
 class Transaction(models.Model):
 	''' Операции '''
-	date = models.DateTimeField('date', auto_now=True)
-	debit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
-	credit = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='+')
-	amount = models.IntegerField()
-	description = models.CharField(max_length=200)
+	date = models.DateTimeField('Дата', auto_now=True)
+	debit = models.ForeignKey(
+		Account,
+		verbose_name='Дебет',
+		on_delete=models.CASCADE,
+		related_name='+'
+	)
+	credit = models.ForeignKey(
+		Account,
+		verbose_name='Кредит',
+		on_delete=models.CASCADE,
+		related_name='+'
+	)
+	amount = models.IntegerField('Сумма')
+	description = models.CharField('Описание', max_length=200)
+
+	class Meta:
+		''' Метаданные операций '''
+		verbose_name = 'Операция'
+		verbose_name_plural = 'Операции'

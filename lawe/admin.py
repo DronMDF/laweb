@@ -6,10 +6,18 @@
 '''
 
 from django.contrib import admin
-from .models import Account
+from .models import Account, Transaction
 
 
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
 	''' Админка для счетов '''
 	list_display = ('group', 'subgroup', 'name', 'shortname')
+	list_filter = ('group',)
+
+
+@admin.register(Transaction)
+class TransactionAdmin(admin.ModelAdmin):
+	''' Админка для операций '''
+	list_display = ('date', 'debit', 'credit', 'amount', 'description')
+	list_filter = ('debit', 'credit')
