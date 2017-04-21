@@ -45,6 +45,7 @@ class TestOperations(TestCase):
 			'debit_id': a1.id,
 			'credit_id': a2.id,
 			'amount': 1,
+			'unit': 'RUB',
 			'description': 'Проверка запрета'
 		})
 		# Then
@@ -61,6 +62,7 @@ class TestOperations(TestCase):
 			'debit_id': a1.id,
 			'credit_id': a2.id,
 			'amount': 1,
+			'unit': 'RUB',
 			'description': 'Проверка запрета'
 		})
 		# Then
@@ -78,6 +80,7 @@ class TestOperations(TestCase):
 			'debit_id': a1.id,
 			'credit_id': a2.id,
 			'amount': 1,
+			'unit': 'RUB',
 			'description': 'Проверка разрешения'
 		})
 		# Then

@@ -63,6 +63,11 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		))
 		if not permit:
 			raise PermissionDenied
-		Transaction.objects.create(debit=debit, credit=credit,
-			amount=request.POST['amount'], description=request.POST['description'])
+		Transaction.objects.create(
+			debit=debit,
+			credit=credit,
+			amount=request.POST['amount'],
+			unit=request.POST['unit'],
+			description=request.POST['description']
+		)
 		return self.get(request, *args, **kwargs)

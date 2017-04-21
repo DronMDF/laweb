@@ -34,7 +34,11 @@
 		</select>
 		</td>
 		<td class='amount_field'>
-		<input type='number' name='amount'/>
+		<input type='text' size='5' name='amount'/>
+		<select name='unit'>
+			<option value='RUB'>Руб</option>
+			<option value='KG'>Кг</option>
+		</select>
 		</td>
 		<td>
 		<input type='text' name='description'/>
