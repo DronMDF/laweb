@@ -115,19 +115,41 @@ class TestOperations(TestCase):
 		self.assertIn('Show', text)
 		self.assertNotIn('Hide', text)
 
+
+class TestOperationsView(TestOperations):
+	''' Тестирование того, что содержится в ответе сервера '''
+	def setUp(self):
+		''' Метод настройки '''
+		super().setUp()
+		self.a1 = Account.objects.create()
+		self.a1.allow_users.add(self.user)
+		self.a2 = Account.objects.create()
+		self.a2.allow_users.add(self.user)
+
+	def parse(self, response):
+		''' Разор xml ответа от сервера '''
+		self.assertEqual(response.status_code, 200)
+		text = response.content.decode('utf8')
+		return ElementTree.fromstring(text)
+
 	def testDefaultOperationUnitsIsRub(self):
 		''' Единица измерения по умолчанию - рубли '''
 		# Given
-		a1 = Account.objects.create()
-		a1.allow_users.add(self.user)
-		a2 = Account.objects.create()
-		a2.allow_users.add(self.user)
-		Transaction.objects.create(debit=a1, credit=a2, amount=1, description='RUB')
+		Transaction.objects.create(debit=self.a1, credit=self.a2, amount=1, description='RUB')
 		# When
 		response = self.client.get('/')
 		# Then
-		self.assertEqual(response.status_code, 200)
-		text = response.content.decode('utf8')
-		root = ElementTree.fromstring(text)
+		root = self.parse(response)
 		op = root.find(".//operation[description='RUB']")
 		self.assertEqual(op.find('unit').text, 'RUB')
+
+	def testOperationUnitsIsKg(self):
+		''' Единица измерения - килограммы  '''
+		# Given
+		Transaction.objects.create(debit=self.a1, credit=self.a2, amount=1, description='KG', unit='KG')
+		# When
+		response = self.client.get('/')
+		# Then
+		root = self.parse(response)
+		op = root.find(".//operation[description='KG']")
+		self.assertEqual(op.find('unit').text, 'KG')
