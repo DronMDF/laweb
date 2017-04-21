@@ -59,7 +59,14 @@
 				<td class='date_field'><xsl:value-of select="date"/></td>
 				<td class='debit_field'><a href='account/{debit/id}'><xsl:value-of select="debit/name"/></a></td>
 				<td class='credit_field'><a href='account/{credit/id}'><xsl:value-of select="credit/name"/></a></td>
-				<td class='amount_field'><xsl:value-of select="amount"/></td>
+				<td class='amount_field'>
+					<xsl:value-of select="amount"/>
+					<xsl:choose>
+						<xsl:when test="unit='RUB'">Руб</xsl:when>
+						<xsl:when test="unit='KG'">Кг</xsl:when>
+						<xsl:otherwise>???</xsl:otherwise>
+					</xsl:choose>
+				</td>
 				<td><xsl:value-of select="description"/></td>
 			</tr>
 			</xsl:for-each>
