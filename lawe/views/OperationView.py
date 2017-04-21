@@ -31,6 +31,7 @@ class OperationView(LoginRequiredMixin, TemplateView):
 				'name': op.credit.shortname
 			},
 			'amount': op.amount,
+			'unit': op.unit,
 			'description': op.description
 		}
 

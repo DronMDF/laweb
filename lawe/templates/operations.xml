@@ -26,6 +26,7 @@
 			<name>{{op.credit.name}}</name>
 		</credit>
 		<amount>{{op.amount}}</amount>
+		<unit>{{op.unit}}</unit>
 		<description>{{op.description}}</description>
 	</operation>
 {% endfor %}

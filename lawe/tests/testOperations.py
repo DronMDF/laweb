@@ -1,4 +1,5 @@
 ''' Operation tests '''
+from xml.etree import ElementTree
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from lawe.models import Account, Transaction
@@ -113,3 +114,20 @@ class TestOperations(TestCase):
 		text = response.content.decode('utf8')
 		self.assertIn('Show', text)
 		self.assertNotIn('Hide', text)
+
+	def testDefaultOperationUnitsIsRub(self):
+		''' Единица измерения по умолчанию - рубли '''
+		# Given
+		a1 = Account.objects.create()
+		a1.allow_users.add(self.user)
+		a2 = Account.objects.create()
+		a2.allow_users.add(self.user)
+		Transaction.objects.create(debit=a1, credit=a2, amount=1, description='RUB')
+		# When
+		response = self.client.get('/')
+		# Then
+		self.assertEqual(response.status_code, 200)
+		text = response.content.decode('utf8')
+		root = ElementTree.fromstring(text)
+		op = root.find(".//operation[description='RUB']")
+		self.assertEqual(op.find('unit').text, 'RUB')

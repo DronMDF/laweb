@@ -24,6 +24,11 @@ class Account(models.Model):
 
 class Transaction(models.Model):
 	''' Операции '''
+	UNIT_CHOICES = (
+		('RUB', 'Рубли'),
+		('KG', 'Килограммы')
+	)
+
 	date = models.DateTimeField('Дата', auto_now=True)
 	debit = models.ForeignKey(
 		Account,
@@ -38,6 +43,7 @@ class Transaction(models.Model):
 		related_name='+'
 	)
 	amount = models.IntegerField('Сумма')
+	unit = models.CharField('Единица измерения', max_length=3, choices=UNIT_CHOICES, default='RUB')
 	description = models.CharField('Описание', max_length=200)
 
 	class Meta:
