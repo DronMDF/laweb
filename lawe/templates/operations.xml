@@ -9,6 +9,10 @@
 		{% csrf_token %}
 	</cqrf>
 {% for acc in accounts %}
+	<!-- @todo #55:30min Необходимо добавить сюда признак доступности счета
+		Чтобы можно было отфильтровать доступные счета для формы
+		И при этом использовать данные отсюда в таблице ниже
+		(а не хранить имена и там) -->
 	<account>
 		<id>{{acc.id}}</id>
 		<name>{{acc.name}}</name>
@@ -26,6 +30,7 @@
 			<name>{{op.credit.name}}</name>
 		</credit>
 		<amount>{{op.amount}}</amount>
+		<unit>{{op.unit}}</unit>
 		<description>{{op.description}}</description>
 	</operation>
 {% endfor %}

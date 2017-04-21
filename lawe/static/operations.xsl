@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:decimal-format name="Custom" grouping-separator=" "/>
 <xsl:template match="/operations">
 <html>
 <head>
@@ -34,7 +35,11 @@
 		</select>
 		</td>
 		<td class='amount_field'>
-		<input type='number' name='amount'/>
+		<input type='text' size='5' name='amount'/>
+		<select name='unit'>
+			<option value='RUB'>Руб</option>
+			<option value='KG'>Кг</option>
+		</select>
 		</td>
 		<td>
 		<input type='text' name='description'/>
@@ -59,7 +64,15 @@
 				<td class='date_field'><xsl:value-of select="date"/></td>
 				<td class='debit_field'><a href='account/{debit/id}'><xsl:value-of select="debit/name"/></a></td>
 				<td class='credit_field'><a href='account/{credit/id}'><xsl:value-of select="credit/name"/></a></td>
-				<td class='amount_field'><xsl:value-of select="amount"/></td>
+				<td class='amount_field'>
+					<xsl:value-of select="format-number(amount, '# ##0', 'Custom')"/>
+					<xsl:text>&#xa0;</xsl:text>
+					<xsl:choose>
+						<xsl:when test="unit='RUB'">Руб</xsl:when>
+						<xsl:when test="unit='KG'">Кг</xsl:when>
+						<xsl:otherwise>???</xsl:otherwise>
+					</xsl:choose>
+				</td>
 				<td><xsl:value-of select="description"/></td>
 			</tr>
 			</xsl:for-each>
