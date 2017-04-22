@@ -19,9 +19,16 @@ class AccountView(LoginRequiredMixin, TemplateView):
 			'date': op.date.strftime('%d.%m.%Y'),
 			'income': op.amount if op.credit == acc else '-',
 			'outcome': op.amount if op.debit == acc else '-',
+			'unit': op.unit,
 			'description': op.description,
 			'other': op.credit.shortname if op.debit == acc else op.debit.shortname
 		}
+
+	def getTotal(self, account, unit):
+		''' Подсчет общего баланса для конкретной единицы измерения '''
+		income = sum((t.amount for t in Transaction.objects.filter(credit=account, unit=unit)))
+		outcome = sum((t.amount for t in Transaction.objects.filter(debit=account, unit=unit)))
+		return income - outcome
 
 	def get_context_data(self, **kwargs):
 		''' Стандартный метод для формирования контекста '''
@@ -30,9 +37,12 @@ class AccountView(LoginRequiredMixin, TemplateView):
 		account = get_object_or_404(Account, pk=account_id)
 		if not account.allow_users.filter(pk=self.request.user.id).exists():
 			raise PermissionDenied
-		income = sum((t.amount for t in Transaction.objects.filter(credit=account)))
-		outcome = sum((t.amount for t in Transaction.objects.filter(debit=account)))
-		context['total'] = income - outcome
+		context['totals'] = [
+			{
+				'total': self.getTotal(account, unit),
+				'unit': unit
+			} for unit in ['RUB', 'KG']
+		]
 		context['operations'] = [
 			self.get_operation_context(t, account) for t in Transaction.objects.filter(
 				Q(credit=account) | Q(debit=account)

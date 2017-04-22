@@ -53,6 +53,8 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		]
 		return context
 
+	# @todo #57:30min Можно создать операцию с одним и тем же счетом
+	#  баланс счета при этом не изменится, потому что он будет сразу и дебетом и кредитом
 	def post(self, request, *args, **kwargs):
 		''' Обработчик вводимых операций '''
 		debit = Account.objects.get(pk=request.POST['debit_id'])
