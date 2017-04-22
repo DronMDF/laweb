@@ -39,8 +39,36 @@
 			<xsl:for-each select="operation">
 			<tr>
 				<td class='date_field'><xsl:value-of select="date"/></td>
-				<td class='amount_field'><xsl:value-of select="income"/></td>
-				<td class='amount_field'><xsl:value-of select="outcome"/></td>
+				<td class='amount_field'>
+					<xsl:choose>
+						<xsl:when test="income='-'">
+							-
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="format-number(income, '# ##0', 'Custom')"/>
+							<xsl:text>&#xa0;</xsl:text>
+							<xsl:choose>
+								<xsl:when test="unit='RUB'">Руб</xsl:when>
+								<xsl:when test="unit='KG'">Кг</xsl:when>
+							</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
+				<td class='amount_field'>
+					<xsl:choose>
+						<xsl:when test="outcome='-'">
+							-
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="format-number(outcome, '# ##0', 'Custom')"/>
+							<xsl:text>&#xa0;</xsl:text>
+							<xsl:choose>
+								<xsl:when test="unit='RUB'">Руб</xsl:when>
+								<xsl:when test="unit='KG'">Кг</xsl:when>
+							</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+				</td>
 				<td><xsl:value-of select="description"/></td>
 				<td class='credit_field'><xsl:value-of select="other"/></td>
 			</tr>
