@@ -10,8 +10,7 @@ class TestAccountView(TestCase):
 	def setUp(self):
 		self.user = User.objects.create_user('john', 'password')
 		# Другой аккаунт мы создадим заранее, чтобы он не замусоривал тесты
-		self.oacc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
+		self.oacc = Account.objects.create()
 		self.oacc.allow_users.add(self.user)
 		self.client = Client()
 		self.client.force_login(self.user)
@@ -25,8 +24,7 @@ class TestAccountView(TestCase):
 	def testZeroAccount(self):
 		''' Аккаунт без транзакций выдает сумму 0 '''
 		# Given
-		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
+		acc = Account.objects.create()
 		acc.allow_users.add(self.user)
 		# When
 		response = self.client.get('/account/%u' % acc.id)
@@ -37,8 +35,7 @@ class TestAccountView(TestCase):
 	def testCreditedAccount(self):
 		''' На счет перечислены деньги '''
 		# Given
-		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
+		acc = Account.objects.create()
 		acc.allow_users.add(self.user)
 		Transaction.objects.create(debit=self.oacc, credit=acc, amount=100, description='')
 		# When
@@ -51,8 +48,7 @@ class TestAccountView(TestCase):
 	def testDebitAccount(self):
 		''' Со счетасписаны  деньги '''
 		# Given
-		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
+		acc = Account.objects.create()
 		acc.allow_users.add(self.user)
 		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, description='')
 		# When
@@ -74,8 +70,7 @@ class TestAccountView(TestCase):
 	def testDebitWithDifferentUnits(self):
 		''' Со счетасписаны деньги и килограммы'''
 		# Given
-		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
+		acc = Account.objects.create()
 		acc.allow_users.add(self.user)
 		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='RUB')
 		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='KG')
@@ -89,8 +84,7 @@ class TestAccountView(TestCase):
 	def testOperationShouldUnits(self):
 		''' Со счетасписаны деньги и килограммы'''
 		# Given
-		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
-				unit='тр')
+		acc = Account.objects.create()
 		acc.allow_users.add(self.user)
 		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='RUB')
 		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='KG')
