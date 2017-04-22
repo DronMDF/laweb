@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:decimal-format name="Custom" grouping-separator=" "/>
 <xsl:template match="/account">
 <html>
 <head>
@@ -14,9 +15,16 @@
 	<a href='/logout/'>Выйти</a>
 	</p>
 
-	Остаток: <xsl:value-of select="total"/>
-
+	<xsl:for-each select="total">
+	Остаток: <xsl:value-of select="format-number(., '# ##0', 'Custom')"/>
+	<xsl:text>&#xa0;</xsl:text>
+	<xsl:choose>
+		<xsl:when test="@unit='RUB'">Руб</xsl:when>
+		<xsl:when test="@unit='KG'">Кг</xsl:when>
+	</xsl:choose>
 	<p/>
+	</xsl:for-each>
+
 	<table>
 		<thead>
 			<tr>
