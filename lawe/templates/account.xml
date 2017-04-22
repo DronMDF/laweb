@@ -5,7 +5,9 @@
 	<user>
 		<name>{{request.user.username}}</name>
 	</user>
-	<total>{{total}}</total>
+{% for t in totals %}
+	<total unit='{{t.unit}}'>{{t.total}}</total>
+{% endfor %}
 {% for op in operations %}
 	<operation>
 		<date>{{op.date}}</date>

@@ -32,7 +32,12 @@ class AccountView(LoginRequiredMixin, TemplateView):
 			raise PermissionDenied
 		income = sum((t.amount for t in Transaction.objects.filter(credit=account)))
 		outcome = sum((t.amount for t in Transaction.objects.filter(debit=account)))
-		context['total'] = income - outcome
+		context['totals'] = [
+			{
+				'total': income - outcome,
+				'unit': 'RUB'
+			}
+		]
 		context['operations'] = [
 			self.get_operation_context(t, account) for t in Transaction.objects.filter(
 				Q(credit=account) | Q(debit=account)

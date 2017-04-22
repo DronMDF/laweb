@@ -1,4 +1,5 @@
 ''' Тесты для страницы отчета по счету '''
+from xml.etree import ElementTree
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from lawe.models import Account, Transaction
@@ -25,7 +26,9 @@ class TestAccountView(TestCase):
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
 		self.assertEqual(response.status_code, 200)
-		self.assertIn('<total>0</total>', response.content.decode('utf8'))
+		text = response.content.decode('utf8')
+		root = ElementTree.fromstring(text)
+		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), 0)
 
 	def testCreditedAccount(self):
 		''' На счет перечислены деньги '''
@@ -38,8 +41,10 @@ class TestAccountView(TestCase):
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
 		self.assertEqual(response.status_code, 200)
-		self.assertIn('<total>100</total>', response.content.decode('utf8'))
-		self.assertIn('<income>100</income>', response.content.decode('utf8'))
+		text = response.content.decode('utf8')
+		root = ElementTree.fromstring(text)
+		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), 100)
+		self.assertEqual(int(root.find(".//operation/income").text), 100)
 
 	def testDebitAccount(self):
 		''' Со счетасписаны  деньги '''
@@ -52,8 +57,10 @@ class TestAccountView(TestCase):
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
 		self.assertEqual(response.status_code, 200)
-		self.assertIn('<total>-100</total>', response.content.decode('utf8'))
-		self.assertIn('<outcome>100</outcome>', response.content.decode('utf8'))
+		text = response.content.decode('utf8')
+		root = ElementTree.fromstring(text)
+		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), -100)
+		self.assertEqual(int(root.find(".//operation/outcome").text), 100)
 
 	def testUserWithoutAccess(self):
 		''' Пользователь без доступа к счету не может просматривать состояние счета '''
