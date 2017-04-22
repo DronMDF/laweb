@@ -16,6 +16,12 @@ class TestAccountView(TestCase):
 		self.client = Client()
 		self.client.force_login(self.user)
 
+	def parseResponse(self, response):
+		''' Разбор ответа от сервера в виде xml-dom '''
+		self.assertEqual(response.status_code, 200)
+		text = response.content.decode('utf8')
+		return ElementTree.fromstring(text)
+
 	def testZeroAccount(self):
 		''' Аккаунт без транзакций выдает сумму 0 '''
 		# Given
@@ -25,9 +31,7 @@ class TestAccountView(TestCase):
 		# When
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
-		self.assertEqual(response.status_code, 200)
-		text = response.content.decode('utf8')
-		root = ElementTree.fromstring(text)
+		root = self.parseResponse(response)
 		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), 0)
 
 	def testCreditedAccount(self):
@@ -40,9 +44,7 @@ class TestAccountView(TestCase):
 		# When
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
-		self.assertEqual(response.status_code, 200)
-		text = response.content.decode('utf8')
-		root = ElementTree.fromstring(text)
+		root = self.parseResponse(response)
 		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), 100)
 		self.assertEqual(int(root.find(".//operation/income").text), 100)
 
@@ -56,9 +58,7 @@ class TestAccountView(TestCase):
 		# When
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
-		self.assertEqual(response.status_code, 200)
-		text = response.content.decode('utf8')
-		root = ElementTree.fromstring(text)
+		root = self.parseResponse(response)
 		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), -100)
 		self.assertEqual(int(root.find(".//operation/outcome").text), 100)
 
@@ -70,3 +70,18 @@ class TestAccountView(TestCase):
 		response = self.client.get('/account/%u' % acc.id)
 		# Then
 		self.assertEqual(response.status_code, 403)
+
+	def testDebitWithDifferentUnits(self):
+		''' Со счетасписаны деньги и килограммы'''
+		# Given
+		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
+				unit='тр')
+		acc.allow_users.add(self.user)
+		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='RUB')
+		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='KG')
+		# When
+		response = self.client.get('/account/%u' % acc.id)
+		# Then
+		root = self.parseResponse(response)
+		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), -100)
+		self.assertEqual(int(root.find(".//total[@unit='KG']").text), -100)
