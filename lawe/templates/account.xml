@@ -13,6 +13,7 @@
 		<date>{{op.date}}</date>
 		<income>{{op.income}}</income>
 		<outcome>{{op.outcome}}</outcome>
+		<unit>{{op.unit}}</unit>
 		<description>{{op.description}}</description>
 		<other>{{op.other}}</other>
 	</operation>

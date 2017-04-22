@@ -85,3 +85,18 @@ class TestAccountView(TestCase):
 		root = self.parseResponse(response)
 		self.assertEqual(int(root.find(".//total[@unit='RUB']").text), -100)
 		self.assertEqual(int(root.find(".//total[@unit='KG']").text), -100)
+
+	def testOperationShouldUnits(self):
+		''' Со счетасписаны деньги и килограммы'''
+		# Given
+		acc = Account.objects.create(group='G', subgroup='E', name='N', shortname='S',
+				unit='тр')
+		acc.allow_users.add(self.user)
+		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='RUB')
+		Transaction.objects.create(debit=acc, credit=self.oacc, amount=100, unit='KG')
+		# When
+		response = self.client.get('/account/%u' % acc.id)
+		# Then
+		root = self.parseResponse(response)
+		self.assertEqual(int(root.find(".//operation[unit='RUB']/outcome").text), 100)
+		self.assertEqual(int(root.find(".//operation[unit='KG']/outcome").text), 100)

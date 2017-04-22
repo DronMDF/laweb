@@ -19,6 +19,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
 			'date': op.date.strftime('%d.%m.%Y'),
 			'income': op.amount if op.credit == acc else '-',
 			'outcome': op.amount if op.debit == acc else '-',
+			'unit': op.unit,
 			'description': op.description,
 			'other': op.credit.shortname if op.debit == acc else op.debit.shortname
 		}
