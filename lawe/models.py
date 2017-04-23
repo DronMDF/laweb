@@ -6,9 +6,9 @@ from django.db import models
 class Account(models.Model):
 	''' Счет '''
 	date = models.DateField('Дата создания', auto_now=True)
-	group = models.CharField('Основная группа', max_length=200)
-	subgroup = models.CharField('Подгруппа', max_length=200)
-	name = models.CharField('Название', max_length=200)
+	group = models.CharField('Основная группа', max_length=200, blank=True)
+	subgroup = models.CharField('Подгруппа', max_length=200, blank=True)
+	name = models.CharField('Название', max_length=200, blank=True)
 	shortname = models.CharField('Сокращенное название', max_length=50)
 	allow_users = models.ManyToManyField(User)
 
@@ -43,7 +43,7 @@ class Transaction(models.Model):
 	)
 	amount = models.IntegerField('Сумма')
 	unit = models.CharField('Единица измерения', max_length=3, choices=UNIT_CHOICES, default='RUB')
-	description = models.CharField('Описание', max_length=200)
+	description = models.CharField('Описание', max_length=200, blank=True)
 
 	class Meta:
 		''' Метаданные операций '''
