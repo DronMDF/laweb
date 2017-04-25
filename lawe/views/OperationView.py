@@ -45,7 +45,7 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		]
 		context['operations'] = [
 			self.get_operation_data(op)
-			for op in Transaction.objects.all().order_by('-date')
+			for op in Transaction.objects.all().order_by('-opdate', '-date')
 			if any((
 				op.debit.allow_users.filter(pk=self.request.user.id).exists(),
 				op.credit.allow_users.filter(pk=self.request.user.id).exists()
@@ -55,6 +55,11 @@ class OperationView(LoginRequiredMixin, TemplateView):
 
 	# @todo #57:30min Можно создать операцию с одним и тем же счетом
 	#  баланс счета при этом не изменится, потому что он будет сразу и дебетом и кредитом
+
+	# @todo #65:30min Необходимо в форме указывать дату проведения операции
+	#  +- два дня, и вносить ее в БД. Для более долгих сдвигов есть админка,
+	#  где можно редактировать время проведения операции.
+	#  Сейчас при создании операций время стоит пустое.
 	def post(self, request, *args, **kwargs):
 		''' Обработчик вводимых операций '''
 		debit = Account.objects.get(pk=request.POST['debit_id'])

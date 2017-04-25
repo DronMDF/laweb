@@ -1,5 +1,6 @@
 ''' Operation tests '''
 from xml.etree import ElementTree
+from datetime import date, timedelta
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from lawe.models import Account, Transaction
@@ -156,3 +157,20 @@ class TestOperationsView(TestOperations):
 		root = self.parse(response)
 		op = root.find(".//operation[description='KG']")
 		self.assertEqual(op.find('unit').text, 'KG')
+
+	def testOrderedByOpdata(self):
+		''' Транзакции отображаются в порядке opdata '''
+		# Given
+		Transaction.objects.create(opdate=date.today(), debit=self.a1, credit=self.a2, amount=1)
+		Transaction.objects.create(
+			opdate=date.today() - timedelta(days=2),
+			debit=self.a1,
+			credit=self.a2,
+			amount=2
+		)
+		# When
+		response = self.client.get('/')
+		# Then
+		root = self.parse(response)
+		self.assertEqual(int(root.find(".//operation[1]/amount").text), 1)
+		self.assertEqual(int(root.find(".//operation[last()]/amount").text), 2)
