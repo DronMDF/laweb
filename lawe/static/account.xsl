@@ -5,6 +5,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="/static/operations.css"/>
+<title>Счет: <xsl:value-of select='shortname'/></title>
 </head>
 <body>
 	<p align='right'>
@@ -13,6 +14,10 @@
 	<xsl:value-of select='user/name'/><xsl:text>&#xa0;</xsl:text>
 	<a href='/password_change/'>Сменить пароль</a><xsl:text>&#xa0;</xsl:text>
 	<a href='/logout/'>Выйти</a>
+	</p>
+
+	<p>
+	Счет: <xsl:value-of select='shortname'/>
 	</p>
 
 	<xsl:for-each select="total">
