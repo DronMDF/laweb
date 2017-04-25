@@ -2,6 +2,7 @@
 {% load static %}
 <?xml-stylesheet type="text/xsl" href="{% static 'account.xsl' %}"?>
 <account>
+	<shortname>{{shortname}}</shortname>
 	<user>
 		<name>{{request.user.username}}</name>
 	</user>

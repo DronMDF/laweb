@@ -37,6 +37,7 @@ class AccountView(LoginRequiredMixin, TemplateView):
 		account = get_object_or_404(Account, pk=account_id)
 		if not account.allow_users.filter(pk=self.request.user.id).exists():
 			raise PermissionDenied
+		context['shortname'] = account.shortname
 		context['totals'] = [
 			{
 				'total': self.getTotal(account, unit),

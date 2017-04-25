@@ -94,3 +94,14 @@ class TestAccountView(TestCase):
 		root = self.parseResponse(response)
 		self.assertEqual(int(root.find(".//operation[unit='RUB']/outcome").text), 100)
 		self.assertEqual(int(root.find(".//operation[unit='KG']/outcome").text), 100)
+
+	def testNameOfAccount(self):
+		''' Короткое имя аккаунта выводится для отображения '''
+		# Given
+		acc = Account.objects.create(shortname='Test account')
+		acc.allow_users.add(self.user)
+		# When
+		response = self.client.get('/account/%u' % acc.id)
+		# Then
+		root = self.parseResponse(response)
+		self.assertEqual(root.find(".//shortname").text, 'Test account')
