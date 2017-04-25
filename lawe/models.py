@@ -28,7 +28,7 @@ class Transaction(models.Model):
 		('KG', 'Килограммы')
 	)
 
-	date = models.DateTimeField('Дата', auto_now=True)
+	date = models.DateTimeField('Дата', auto_now_add=True)
 	debit = models.ForeignKey(
 		Account,
 		verbose_name='Дебет',
