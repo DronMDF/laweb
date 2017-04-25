@@ -19,5 +19,5 @@ class AccountAdmin(admin.ModelAdmin):
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
 	''' Админка для операций '''
-	list_display = ('date', 'debit', 'credit', 'amount', 'unit', 'description')
+	list_display = ('date', 'opdate', 'debit', 'credit', 'amount', 'unit', 'description')
 	list_filter = ('debit', 'credit', 'unit')
