@@ -1,4 +1,5 @@
 ''' Тесты для страницы отчета по счету '''
+from datetime import date, timedelta
 from xml.etree import ElementTree
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
@@ -105,3 +106,22 @@ class TestAccountView(TestCase):
 		# Then
 		root = self.parseResponse(response)
 		self.assertEqual(root.find(".//shortname").text, 'Test account')
+
+	def testOrderedByOpdate(self):
+		''' Записи выводятся в порядке даты проведения '''
+		# Given
+		acc = Account.objects.create()
+		acc.allow_users.add(self.user)
+		Transaction.objects.create(opdate=date.today(), debit=acc, credit=self.oacc, amount=1)
+		Transaction.objects.create(
+			opdate=date.today() - timedelta(days=2),
+			debit=acc,
+			credit=self.oacc,
+			amount=2
+		)
+		# When
+		response = self.client.get('/account/%u' % acc.id)
+		# Then
+		root = self.parseResponse(response)
+		self.assertEqual(int(root.find(".//operation[1]/outcome").text), 1)
+		self.assertEqual(int(root.find(".//operation[2]/outcome").text), 2)
