@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:decimal-format name="Custom" grouping-separator=" "/>
 <xsl:template match="/operations">
 <html>
@@ -19,7 +19,20 @@
 		<input type='hidden' name='csrfmiddlewaretoken' value='{cqrf/input/@value}'/>
 		<table>
 		<tr>
-		<td class='date_field'></td>
+		<td class='date_field'>
+		<select name="date">
+			<xsl:for-each select="date">
+				<xsl:choose>
+					<xsl:when test='@id=0'>
+						<option value='{@id}' selected='selected'><xsl:value-of select='.'/></option>
+					</xsl:when>
+					<xsl:otherwise>
+						<option value='{@id}'><xsl:value-of select='.'/></option>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:for-each>
+		</select>
+		</td>
 		<td class='debit_field'>
 		<select name="debit_id">
 			<xsl:for-each select="account">
