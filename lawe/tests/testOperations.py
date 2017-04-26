@@ -43,6 +43,7 @@ class TestOperations(TestCase):
 		a2 = Account.objects.create()
 		# When
 		response = self.client.post('/', {
+			'date': 0,
 			'debit_id': a1.id,
 			'credit_id': a2.id,
 			'amount': 1,
@@ -60,6 +61,7 @@ class TestOperations(TestCase):
 		a2.allow_users.add(self.user)
 		# When
 		response = self.client.post('/', {
+			'date': 0,
 			'debit_id': a1.id,
 			'credit_id': a2.id,
 			'amount': 1,
@@ -78,6 +80,7 @@ class TestOperations(TestCase):
 		a2.allow_users.add(self.user)
 		# When
 		response = self.client.post('/', {
+			'date': 0,
 			'debit_id': a1.id,
 			'credit_id': a2.id,
 			'amount': 1,

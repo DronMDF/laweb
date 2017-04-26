@@ -1,4 +1,5 @@
 ''' laweb views '''
+from datetime import date, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic import TemplateView
@@ -20,8 +21,9 @@ class OperationView(LoginRequiredMixin, TemplateView):
 
 	def get_operation_data(self, op):
 		''' Формирование контекста для отдельной операции'''
+		opdate = op.opdate if op.opdate is not None else op.date
 		return {
-			'date': op.date.strftime('%d.%m.%Y'),
+			'date': opdate.strftime('%d.%m.%Y'),
 			'debit': {
 				'id': op.debit.id,
 				'name': op.debit.shortname
@@ -35,9 +37,18 @@ class OperationView(LoginRequiredMixin, TemplateView):
 			'description': op.description
 		}
 
+	def date(self, delta):
+		''' Форматирует дату в соответствии с нужным форматом '''
+		day = date.today() - timedelta(days=delta)
+		return {
+			'id': delta,
+			'date': day.strftime('%d.%m.%Y')
+		}
+
 	def get_context_data(self, **kwargs):
 		''' Стандартный метод для формирования контекста '''
 		context = super().get_context_data(**kwargs)
+		context['dates'] = [self.date(delta) for delta in [4, 3, 2, 1, 0]]
 		context['accounts'] = [
 			self.get_account_data(acc)
 			for acc in Account.objects.all()
@@ -55,13 +66,9 @@ class OperationView(LoginRequiredMixin, TemplateView):
 
 	# @todo #57:30min Можно создать операцию с одним и тем же счетом
 	#  баланс счета при этом не изменится, потому что он будет сразу и дебетом и кредитом
-
-	# @todo #65:30min Необходимо в форме указывать дату проведения операции
-	#  +- два дня, и вносить ее в БД. Для более долгих сдвигов есть админка,
-	#  где можно редактировать время проведения операции.
-	#  Сейчас при создании операций время стоит пустое.
 	def post(self, request, *args, **kwargs):
 		''' Обработчик вводимых операций '''
+		opdate = date.today() - timedelta(days=int(request.POST['date']))
 		debit = Account.objects.get(pk=request.POST['debit_id'])
 		credit = Account.objects.get(pk=request.POST['credit_id'])
 		permit = all((
@@ -71,6 +78,7 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		if not permit:
 			raise PermissionDenied
 		Transaction.objects.create(
+			opdate=opdate,
 			debit=debit,
 			credit=credit,
 			amount=request.POST['amount'],

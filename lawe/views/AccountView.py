@@ -15,8 +15,9 @@ class AccountView(LoginRequiredMixin, TemplateView):
 
 	def get_operation_context(self, op, acc):
 		''' Контекст для одной операции '''
+		opdate = op.opdate if op.opdate is not None else op.date
 		return {
-			'date': op.date.strftime('%d.%m.%Y'),
+			'date': opdate.strftime('%d.%m.%Y'),
 			'income': op.amount if op.credit == acc else '-',
 			'outcome': op.amount if op.debit == acc else '-',
 			'unit': op.unit,

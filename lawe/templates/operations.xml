@@ -8,13 +8,18 @@
 	<cqrf>
 		{% csrf_token %}
 	</cqrf>
+
+{% for date in dates %}
+	<date id='{{date.id}}'>{{date.date}}</date>
+{% endfor %}
+
 {% for acc in accounts %}
-	<!--
+	{% comment %}
 	@todo #55:30min Необходимо добавить сюда признак доступности счета
 	 Чтобы можно было отфильтровать доступные счета для формы
 	 И при этом использовать данные отсюда в таблице ниже
 	 (а не хранить имена и там)
-	-->
+	{% endcomment %}
 	<account>
 		<id>{{acc.id}}</id>
 		<name>{{acc.name}}</name>
