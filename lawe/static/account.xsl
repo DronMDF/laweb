@@ -24,8 +24,8 @@
 	Остаток: <xsl:value-of select="format-number(., '# ##0', 'Custom')"/>
 	<xsl:text>&#xa0;</xsl:text>
 	<xsl:choose>
-		<xsl:when test="@unit='RUB'">Руб</xsl:when>
-		<xsl:when test="@unit='KG'">Кг</xsl:when>
+		<xsl:when test="@unit='RUB'">руб</xsl:when>
+		<xsl:when test="@unit='KG'">кг</xsl:when>
 	</xsl:choose>
 	<p/>
 	</xsl:for-each>
@@ -53,8 +53,8 @@
 							<xsl:value-of select="format-number(income, '# ##0', 'Custom')"/>
 							<xsl:text>&#xa0;</xsl:text>
 							<xsl:choose>
-								<xsl:when test="unit='RUB'">Руб</xsl:when>
-								<xsl:when test="unit='KG'">Кг</xsl:when>
+								<xsl:when test="unit='RUB'">руб</xsl:when>
+								<xsl:when test="unit='KG'">кг</xsl:when>
 							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
@@ -68,8 +68,8 @@
 							<xsl:value-of select="format-number(outcome, '# ##0', 'Custom')"/>
 							<xsl:text>&#xa0;</xsl:text>
 							<xsl:choose>
-								<xsl:when test="unit='RUB'">Руб</xsl:when>
-								<xsl:when test="unit='KG'">Кг</xsl:when>
+								<xsl:when test="unit='RUB'">руб</xsl:when>
+								<xsl:when test="unit='KG'">кг</xsl:when>
 							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>

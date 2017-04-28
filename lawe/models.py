@@ -25,8 +25,8 @@ class Account(models.Model):
 class Transaction(models.Model):
 	''' Операции '''
 	UNIT_CHOICES = (
-		('RUB', 'Рубли'),
-		('KG', 'Килограммы')
+		('RUB', 'руб'),
+		('KG', 'кг')
 	)
 
 	date = models.DateTimeField('Дата и время создания', auto_now_add=True)
@@ -44,7 +44,7 @@ class Transaction(models.Model):
 		related_name='+'
 	)
 	amount = models.IntegerField('Сумма')
-	unit = models.CharField('Единица измерения', max_length=3, choices=UNIT_CHOICES, default='RUB')
+	unit = models.CharField('Ед. изм.', max_length=3, choices=UNIT_CHOICES, default='RUB')
 	description = models.CharField('Описание', max_length=200, blank=True)
 
 	class Meta:

@@ -52,8 +52,8 @@
 		<td class='amount_field'>
 		<input type='text' size='5' name='amount'/>
 		<select name='unit'>
-			<option value='RUB'>Руб</option>
-			<option value='KG'>Кг</option>
+			<option value='RUB'>руб</option>
+			<option value='KG'>кг</option>
 		</select>
 		</td>
 		<td>
@@ -83,9 +83,8 @@
 					<xsl:value-of select="format-number(amount, '# ##0', 'Custom')"/>
 					<xsl:text>&#xa0;</xsl:text>
 					<xsl:choose>
-						<xsl:when test="unit='RUB'">Руб</xsl:when>
-						<xsl:when test="unit='KG'">Кг</xsl:when>
-						<xsl:otherwise>???</xsl:otherwise>
+						<xsl:when test="unit='RUB'">руб</xsl:when>
+						<xsl:when test="unit='KG'">кг</xsl:when>
 					</xsl:choose>
 				</td>
 				<td><xsl:value-of select="description"/></td>
