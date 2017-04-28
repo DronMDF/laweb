@@ -16,6 +16,7 @@ class Account(models.Model):
 		''' Метаданные счетов '''
 		verbose_name = 'Счет'
 		verbose_name_plural = 'Счета'
+		ordering = ['shortname']
 
 	def __str__(self):
 		return self.shortname
