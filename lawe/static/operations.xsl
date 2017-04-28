@@ -36,6 +36,7 @@
 		<td class='debit_field'>
 		<select name="debit_id">
 			<xsl:for-each select="account">
+				<xsl:sort select="name"/>
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
 		</select>
@@ -43,6 +44,7 @@
 		<td class='credit_field'>
 		<select name="credit_id">
 			<xsl:for-each select="account">
+				<xsl:sort select="name"/>
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
 		</select>
