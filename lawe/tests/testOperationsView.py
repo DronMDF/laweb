@@ -8,6 +8,10 @@ from lawe.models import Account, Transaction
 
 class TestOperations(TestCase):
 	''' Тестирование операций с применением API '''
+	# @todo #70:15min Этот класс тестирует View, но называется некорректно
+	#  и его надо как-то упорядочить с тем кассом, который идет ниже.
+	#  Я его изначально неправильно назвал.
+	#  Но возможно здесь не все относится к View
 	def setUp(self):
 		self.user = User.objects.create_user('john', 'password')
 		self.client = Client()
