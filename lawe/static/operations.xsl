@@ -34,12 +34,8 @@
 		</select>
 		</td>
 		<td class='debit_field'>
-		<!--
-		@todo #70:15min Необходимо скрыть для debit_id и для credit_id все account,
-		 которые помечены как hidden='true'
-		-->
 		<select name="debit_id">
-			<xsl:for-each select="account">
+			<xsl:for-each select="account[not(@hidden)]">
 				<xsl:sort select="name"/>
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
@@ -47,7 +43,7 @@
 		</td>
 		<td class='credit_field'>
 		<select name="credit_id">
-			<xsl:for-each select="account">
+			<xsl:for-each select="account[not(@hidden)]">
 				<xsl:sort select="name"/>
 				<option value='{id}'><xsl:value-of select='name'/></option>
 			</xsl:for-each>
@@ -81,6 +77,10 @@
 			<xsl:for-each select="operation">
 			<tr>
 				<td class='date_field'><xsl:value-of select="date"/></td>
+				<!--
+				@todo #88:15min Если счет не доступен для пользователя, не должно стоять ссылки.
+				 В этом случае мы должны только показывать название без возможности перехода
+				-->
 				<td class='debit_field'><a href='account/{debit/id}'><xsl:value-of select="debit/name"/></a></td>
 				<td class='credit_field'><a href='account/{credit/id}'><xsl:value-of select="credit/name"/></a></td>
 				<td class='amount_field'>
