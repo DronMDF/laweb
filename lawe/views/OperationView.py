@@ -16,7 +16,8 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		''' Формирование контекста для аккаунта '''
 		return {
 			'id': acc.id,
-			'name': acc.shortname
+			'name': acc.shortname,
+			'hidden': not acc.allow_users.filter(pk=self.request.user.id).exists()
 		}
 
 	def get_operation_data(self, op):
@@ -49,17 +50,23 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		''' Стандартный метод для формирования контекста '''
 		context = super().get_context_data(**kwargs)
 		context['dates'] = [self.date(delta) for delta in [4, 3, 2, 1, 0]]
-		context['accounts'] = [
-			self.get_account_data(acc)
-			for acc in Account.objects.all()
-			if acc.allow_users.filter(pk=self.request.user.id).exists()
-		]
 		context['operations'] = [
 			self.get_operation_data(op)
 			for op in Transaction.objects.all().order_by('-opdate', '-date')
 			if any((
 				op.debit.allow_users.filter(pk=self.request.user.id).exists(),
 				op.credit.allow_users.filter(pk=self.request.user.id).exists()
+			))
+		]
+		used_debit_acc = {o['debit']['id'] for o in context['operations']}
+		used_credit_acc = {o['credit']['id'] for o in context['operations']}
+		used_acc = used_debit_acc | used_credit_acc
+		context['accounts'] = [
+			self.get_account_data(acc)
+			for acc in Account.objects.all()
+			if any((
+				acc.allow_users.filter(pk=self.request.user.id).exists(),
+				acc.id in used_acc
 			))
 		]
 		return context
