@@ -34,6 +34,10 @@
 		</select>
 		</td>
 		<td class='debit_field'>
+		<!--
+		@todo #70:15min Необходимо скрыть для debit_id и для credit_id все account,
+		 которые помечены как hidden='true'
+		-->
 		<select name="debit_id">
 			<xsl:for-each select="account">
 				<xsl:sort select="name"/>

@@ -181,3 +181,14 @@ class TestOperationsView(TestOperations):
 		root = self.parse(response)
 		self.assertEqual(int(root.find(".//operation[1]/amount").text), 1)
 		self.assertEqual(int(root.find(".//operation[last()]/amount").text), 2)
+
+	def testForHiddenAccountsInList(self):
+		''' Не все аккаунты, используемые в операциях доступны в форме '''
+		# Given
+		a3 = Account.objects.create()
+		Transaction.objects.create(opdate=date.today(), debit=self.a1, credit=a3, amount=1)
+		# When
+		response = self.client.get('/')
+		# Then
+		root = self.parse(response)
+		self.assertEqual(int(root.find(".//account[@hidden]/id").text), a3.id)
