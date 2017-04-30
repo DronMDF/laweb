@@ -26,14 +26,11 @@
 {% for op in operations %}
 	<operation>
 		<date>{{op.date}}</date>
-		<debit>
-			<id>{{op.debit.id}}</id>
-			<name>{{op.debit.name}}</name>
-		</debit>
-		<credit>
-			<id>{{op.credit.id}}</id>
-			<name>{{op.credit.name}}</name>
-		</credit>
+		<debit_id>{{op.debit.id}}</debit_id>
+		<credit_id>{{op.credit.id}}</credit_id>
+		{% comment %}
+		@todo #9:15min Юниты должны быть аттрибутами amount, это сэкономит место в xml
+		{% endcomment %}
 		<amount>{{op.amount}}</amount>
 		<unit>{{op.unit}}</unit>
 		<description>{{op.description}}</description>

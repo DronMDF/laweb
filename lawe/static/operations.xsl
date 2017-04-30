@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:decimal-format name="Custom" grouping-separator=" "/>
+
 <xsl:template match="/operations">
 <html>
 <head>
@@ -81,8 +82,18 @@
 				@todo #88:15min Если счет не доступен для пользователя, не должно стоять ссылки.
 				 В этом случае мы должны только показывать название без возможности перехода
 				-->
-				<td class='debit_field'><a href='account/{debit/id}'><xsl:value-of select="debit/name"/></a></td>
-				<td class='credit_field'><a href='account/{credit/id}'><xsl:value-of select="credit/name"/></a></td>
+				<td class='debit_field'>
+					<a href='account/{debit_id}'>
+						<xsl:variable name='debit_id' select='number(debit_id)'/>
+						<xsl:value-of select='//account[number(id) = $debit_id]/name'/>
+					</a>
+				</td>
+				<td class='credit_field'>
+					<a href='account/{credit_id}'>
+						<xsl:variable name='credit_id' select='number(credit_id)'/>
+						<xsl:value-of select='//account[number(id) = $credit_id]/name'/>
+					</a>
+				</td>
 				<td class='amount_field'>
 					<xsl:value-of select="format-number(amount, '# ##0', 'Custom')"/>
 					<xsl:text>&#xa0;</xsl:text>
