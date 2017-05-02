@@ -1,6 +1,7 @@
 table {
 	width: 100%;
 	table-layout: fixed;
+	white-space: nowrap;
 }
 
 thead {
@@ -19,10 +20,24 @@ td {
 	padding: 8px;
 }
 
-td.date_field, td.amount_field {
-	width: 10%;
+td.date_field {
+	width: 6%;
+	text-align: center;
 }
 
-td.debit_field, td.credit_field {
-	width: 20%;
+td.debit_field {
+	width: 15%;
+}
+
+td.credit_field {
+	width: 15%;
+}
+
+td.amount_field {
+	width: 10%;
+	text-align: right;
+}
+
+td.description_field {
+	width: 99%;
 }

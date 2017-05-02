@@ -19,49 +19,57 @@
 	<form method='POST'>
 		<input type='hidden' name='csrfmiddlewaretoken' value='{cqrf/input/@value}'/>
 		<table>
-		<tr>
-		<td class='date_field'>
-		<select name="date">
-			<xsl:for-each select="date">
-				<xsl:choose>
-					<xsl:when test='@id=0'>
-						<option value='{@id}' selected='selected'><xsl:value-of select='.'/></option>
-					</xsl:when>
-					<xsl:otherwise>
-						<option value='{@id}'><xsl:value-of select='.'/></option>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
-		</select>
-		</td>
-		<td class='debit_field'>
-		<select name="debit_id">
-			<xsl:for-each select="account[not(@hidden)]">
-				<xsl:sort select="name"/>
-				<option value='{id}'><xsl:value-of select='name'/></option>
-			</xsl:for-each>
-		</select>
-		</td>
-		<td class='credit_field'>
-		<select name="credit_id">
-			<xsl:for-each select="account[not(@hidden)]">
-				<xsl:sort select="name"/>
-				<option value='{id}'><xsl:value-of select='name'/></option>
-			</xsl:for-each>
-		</select>
-		</td>
-		<td class='amount_field'>
-		<input type='text' size='5' name='amount'/>
-		<select name='unit'>
-			<option value='RUB'>руб</option>
-			<option value='KG'>кг</option>
-		</select>
-		</td>
-		<td>
-		<input type='text' name='description'/>
-		<input type='submit'/>
-		</td>
-		</tr>
+			<tr>
+				<td class='date_field'>
+					<select name="date" style='width: 100%;'>
+						<xsl:for-each select="date">
+							<xsl:choose>
+								<xsl:when test='@id=0'>
+									<option value='{@id}' selected='selected'>
+										<xsl:value-of select='.'/>
+									</option>
+								</xsl:when>
+								<xsl:otherwise>
+									<option value='{@id}'>
+										<xsl:value-of select='.'/>
+									</option>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:for-each>
+					</select>
+				</td>
+				<td class='debit_field'>
+					<select name="debit_id" style='width: 100%;'>
+						<xsl:for-each select="account[not(@hidden)]">
+							<xsl:sort select="name"/>
+							<option value='{id}'>
+								<xsl:value-of select='name'/>
+							</option>
+						</xsl:for-each>
+					</select>
+				</td>
+				<td class='credit_field'>
+					<select name="credit_id" style='width: 100%;'>
+						<xsl:for-each select="account[not(@hidden)]">
+							<xsl:sort select="name"/>
+							<option value='{id}'>
+								<xsl:value-of select='name'/>
+							</option>
+						</xsl:for-each>
+					</select>
+				</td>
+				<td class='amount_field'>
+					<input type='text' style='width: 55%;' name='amount'/>
+					<select name='unit' style='width: 35%;'>
+						<option value='RUB'>руб</option>
+						<option value='KG'>кг</option>
+					</select>
+				</td>
+				<td>
+					<input type='text' style='width: 90%;' name='description'/>
+					<input type='submit' style='width: 10%;' value='Добавить'/>
+				</td>
+			</tr>
 		</table>
 	</form>
 	<table>
