@@ -192,3 +192,14 @@ class TestOperationsView(TestOperations):
 		# Then
 		root = self.parse(response)
 		self.assertEqual(int(root.find(".//account[@hidden]/id").text), a3.id)
+
+	def test100RecordsOnFirstPage(self):
+		''' Отображаем по 100 записей на страницу, для остальных страниц будет нафигация '''
+		# Given
+		for n in range(150):
+			Transaction.objects.create(debit=self.a1, credit=self.a2, amount=n)
+		# When
+		response = self.client.get('/')
+		# Then
+		root = self.parse(response)
+		self.assertEqual(len(root.findall(".//operation")), 100)
