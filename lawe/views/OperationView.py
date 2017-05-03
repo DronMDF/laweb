@@ -2,6 +2,8 @@
 from datetime import date, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.views.generic import TemplateView
 from lawe.models import Account, Transaction
 
@@ -23,6 +25,8 @@ class OperationView(LoginRequiredMixin, TemplateView):
 	def get_operation_data(self, op):
 		''' Формирование контекста для отдельной операции'''
 		opdate = op.opdate if op.opdate is not None else op.date
+		# @todo #77:15min Необходимо убрать лишнюю информацию по debit/credit из контекста
+		#  Необходим только debit_id/credit_id, a остальная информация находится в списке аккаунтов.
 		return {
 			'date': opdate.strftime('%d.%m.%Y'),
 			'debit': {
@@ -49,15 +53,26 @@ class OperationView(LoginRequiredMixin, TemplateView):
 	def get_context_data(self, **kwargs):
 		''' Стандартный метод для формирования контекста '''
 		context = super().get_context_data(**kwargs)
+
 		context['dates'] = [self.date(delta) for delta in [4, 3, 2, 1, 0]]
-		context['operations'] = [
-			self.get_operation_data(op)
-			for op in Transaction.objects.all().order_by('-opdate', '-date')
-			if any((
-				op.debit.allow_users.filter(pk=self.request.user.id).exists(),
-				op.credit.allow_users.filter(pk=self.request.user.id).exists()
-			))
-		]
+
+		# @todo #77:15min необходимо достать номер страницы из параметров запроса.
+		#  Не знаю, как оставаться на нужной странице в процессе POST,
+		#  но при обычных запросах это должно нормально показываться.
+		operations = Paginator(
+			Transaction.objects.filter(
+				Q(debit__allow_users__id=self.request.user.id) |
+				Q(credit__allow_users__id=self.request.user.id)
+			).order_by('-opdate', '-date'),
+			100
+		)
+		context['operations'] = [self.get_operation_data(op) for op in operations.page(1)]
+
+		# @todo #77:15min Необходимо передать данные страницы в контекст,
+		#  чтобы можно было сгенерировать навигацию по страницам.
+
+		# @todo #77:15min Фильтровать передаваемые аккаунты необходимо с помощью Query.
+		#  Сейчас мы имеем неоптимальное извлечение информации с анализом каждой записи.
 		used_debit_acc = {o['debit']['id'] for o in context['operations']}
 		used_credit_acc = {o['credit']['id'] for o in context['operations']}
 		used_acc = used_debit_acc | used_credit_acc
