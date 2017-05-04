@@ -203,3 +203,15 @@ class TestOperationsView(TestOperations):
 		# Then
 		root = self.parse(response)
 		self.assertEqual(len(root.findall(".//operation")), 100)
+
+	def testEachOperationShownOnlyOnce(self):
+		''' После выкатки возникла ошибка, что данные операций дублируются '''
+		# Given
+		nu = User.objects.create_user('new', 'new')
+		self.a2.allow_users.add(nu)
+		Transaction.objects.create(debit=self.a1, credit=self.a2, amount=42)
+		# When
+		response = self.client.get('/')
+		# Then
+		root = self.parse(response)
+		self.assertEqual(len(root.findall(".//operation")), 1)
