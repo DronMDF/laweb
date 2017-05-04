@@ -63,7 +63,7 @@ class OperationView(LoginRequiredMixin, TemplateView):
 			Transaction.objects.filter(
 				Q(debit__allow_users__id=self.request.user.id) |
 				Q(credit__allow_users__id=self.request.user.id)
-			).order_by('-opdate', '-date'),
+			).distinct().order_by('-opdate', '-date'),
 			100
 		)
 		context['operations'] = [self.get_operation_data(op) for op in operations.page(1)]
