@@ -28,6 +28,8 @@ class OperationView(LoginRequiredMixin, TemplateView):
 		# @todo #77:15min Необходимо убрать лишнюю информацию по debit/credit из контекста
 		#  Необходим только debit_id/credit_id, a остальная информация находится в списке аккаунтов.
 		return {
+			'id': op.id,
+			'timestamp': op.date.timestamp(),
 			'date': opdate.strftime('%d.%m.%Y'),
 			'debit': {
 				'id': op.debit.id,
