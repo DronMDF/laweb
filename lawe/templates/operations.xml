@@ -24,7 +24,8 @@
 	</account>
 {% endfor %}
 {% for op in operations %}
-	<operation>
+	<operation id='{{op.id}}'>
+		<timestamp>{{op.timestamp}}</timestamp>
 		<date>{{op.date}}</date>
 		<debit_id>{{op.debit.id}}</debit_id>
 		<credit_id>{{op.credit.id}}</credit_id>
