@@ -21,7 +21,7 @@ td {
 }
 
 td.date_field {
-	width: 6%;
+	width: 6.5em;
 	text-align: center;
 }
 
@@ -34,10 +34,25 @@ td.credit_field {
 }
 
 td.amount_field {
-	width: 10%;
+	width: 7em;
 	text-align: right;
 }
 
+td.amount_field input {
+	width: 3.5em;
+}
+td.amount_field select {
+	width: 3.5em;
+}
+
 td.description_field {
-	width: 99%;
+	max-width: 50%;
+}
+
+td.description_field input[type="text"] {
+	width: calc(100% - 7em);
+}
+
+td.description_field input[type="submit"] {
+	width: 7em;
 }
