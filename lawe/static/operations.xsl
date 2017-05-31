@@ -59,15 +59,15 @@
 					</select>
 				</td>
 				<td class='amount_field'>
-					<input type='text' style='width: 55%;' name='amount'/>
-					<select name='unit' style='width: 35%;'>
+					<input type='text' name='amount'/>
+					<select name='unit'>
 						<option value='RUB'>руб</option>
 						<option value='KG'>кг</option>
 					</select>
 				</td>
-				<td>
-					<input type='text' style='width: 90%;' name='description'/>
-					<input type='submit' style='width: 10%;' value='Добавить'/>
+				<td class='description_field'>
+					<input type='text' name='description'/>
+					<input type='submit' value='Добавить'/>
 				</td>
 			</tr>
 		</table>
@@ -110,7 +110,9 @@
 						<xsl:when test="unit='KG'">кг</xsl:when>
 					</xsl:choose>
 				</td>
-				<td><xsl:value-of select="description"/></td>
+				<td class='description_field'>
+					<xsl:value-of select="description"/>
+				</td>
 			</tr>
 			</xsl:for-each>
 		</tbody>
